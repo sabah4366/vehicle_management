@@ -1,0 +1,53 @@
+{% extends 'vehicle/base.html'%}
+
+{% block body%}
+{% load static %}
+{% if messages%}
+    <div class="row">
+        <div class="col-4"></div>
+            <div class="col-4">
+            {% for msg in messages%}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>{{msg}}</strong> 
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+            {%endfor%}
+            </div>
+        <div class="col-4"></div>
+     </div>
+    {% endif%}
+<h1>hello:{{request.user}}</h1>
+<div class="container">
+    <div class="row">
+{% for vh in vehicles%}
+<div class="col-3">
+
+    <div class="card mb-3" style="width: 18rem;height: 250px;">
+        <div class="card-body">
+          <h4 class="card-title">Name:{{vh.vehicle_model | capfirst}}</h4>
+          <h5 class="card-subtitle mb-2 text-body-secondary">Type:{{vh.vehicle_type}}</h5>
+          <h6 class="card-subtitle mb-2 text-body-secondary">No:{{vh.vehicle_number}}</h6>
+          <p class="card-text">Description:{{vh.vehicle_description | capfirst}}</p>
+          {% if request.user.is_superuser == True or request.user.user_type == 'admin_user' %}
+          <button class="btn btn-outline-info ">
+            <a href="{% url 'update-vehicle' vh.id %}" style="text-decoration: none;color: black;">Edit</a>
+          </button>
+          {% endif %}
+          {% if request.user.is_superuser == True %}
+          <button class="btn btn-outline-danger">
+            <a href="{% url 'delete-vehicle' vh.id%}" style="text-decoration: none;color: black;">Delete</a>
+            
+        </button>
+          {% endif %}
+          
+          
+        </div>
+    </div>
+</div>
+
+
+{% endfor %}
+</div>
+</div>
+{% endblock body%}
+
